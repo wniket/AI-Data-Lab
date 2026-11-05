@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Local datasets
+data/
+housing.csv
+
+# Model artifacts
+*.pkl
+*.joblib
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
