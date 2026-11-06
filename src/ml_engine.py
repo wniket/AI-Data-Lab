@@ -82,11 +82,8 @@ class MLModelTrainer:
             "Linear Regression": LinearRegression(),
 
             "Random Forest": RandomForestRegressor(
-                n_estimators=150,
-                max_depth=18,
-                min_samples_leaf=2,
                 random_state=42,
-                n_jobs=-1
+                n_jobs=1
             )
         }
 
@@ -118,22 +115,22 @@ class MLModelTrainer:
             if name == "Random Forest":
 
                 param_grid = {
-                    "model__n_estimators": [100, 200],
+                    "model__n_estimators": [100, 150],
                     "model__max_depth": [12, 18],
-                    "model__min_samples_leaf": [1, 2]
+                    "model__min_samples_leaf": [2]
                 }
 
                 grid_search = GridSearchCV(
-                    estimator=pipeline,
-                    param_grid=param_grid,
-                    scoring={
+                        estimator=pipeline,
+                        param_grid=param_grid,
+                        cv=3,
+                        scoring={
                         "r2": "r2",
                         "rmse": "neg_root_mean_squared_error"
-                    },
+                        },
                     refit="r2",
-                    cv=cv_strategy,
-                    n_jobs=-1,
-                    verbose=1
+                        n_jobs=1,
+                        verbose=1
                 )
 
                 grid_search.fit(X_train, y_train)
@@ -155,7 +152,6 @@ class MLModelTrainer:
                 cv_rmse_mean = -grid_search.cv_results_[
                     "mean_test_rmse"
                 ][best_index]
-
             else:
 
                 # Cross-validation for Linear Regression
